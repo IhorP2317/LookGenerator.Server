@@ -1,10 +1,16 @@
-﻿using LookGenerator.Domain.Entities;
+﻿using LookGenerator.Application.Abstractions;
+using LookGenerator.Domain.Entities;
 using LookGenerator.Persistence.Data.Configurations;
+using LookGenerator.Persistence.Data.Interceptors;
+using LookGenerator.Persistence.Settings;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace LookGenerator.Persistence.Data ;
 
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IOptions<AdminSettings> adminSettings) : DbContext(options),
+        IApplicationDbContext
     {
         public DbSet<AttributeOption> AttributeOptions { get; set; }
         public DbSet<AttributeType> AttributeTypes { get; set; }
@@ -20,6 +26,7 @@ namespace LookGenerator.Persistence.Data ;
         public DbSet<SizeCategory> SizeCategories { get; set; }
         public DbSet<SizeOption> SizeOptions { get; set; }
         public DbSet<User> Users { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,7 +44,6 @@ namespace LookGenerator.Persistence.Data ;
             modelBuilder.ApplyConfiguration(new ProductVariationConfiguration());
             modelBuilder.ApplyConfiguration(new SizeCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new SIzeOptionConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
-
+            modelBuilder.ApplyConfiguration(new UserConfiguration(adminSettings.Value));
         }
     }
