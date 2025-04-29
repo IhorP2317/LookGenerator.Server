@@ -91,12 +91,33 @@ namespace LookGenerator.Persistence.Data.Migrations
                     b.ToTable("AttributeTypes");
                 });
 
+            modelBuilder.Entity("LookGenerator.Domain.Entities.Colour", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Colours");
+                });
+
             modelBuilder.Entity("LookGenerator.Domain.Entities.Look", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("uuid_generate_v4()");
+
+                    b.Property<string>("ColorPalette")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -109,6 +130,9 @@ namespace LookGenerator.Persistence.Data.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<int>("LookStatus")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -146,15 +170,32 @@ namespace LookGenerator.Persistence.Data.Migrations
 
             modelBuilder.Entity("LookGenerator.Domain.Entities.MasterSizeIdentifier", b =>
                 {
-                    b.Property<string>("Identifier")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("SizeOptionId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.HasKey("Identifier");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.HasIndex("SizeOptionId");
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Identifier")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
 
                     b.ToTable("MasterSizeIdentifiers");
                 });
@@ -165,6 +206,9 @@ namespace LookGenerator.Persistence.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("uuid_generate_v4()");
+
+                    b.Property<int>("BodyZone")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uuid");
@@ -177,6 +221,9 @@ namespace LookGenerator.Persistence.Data.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<long>("ExternalId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -306,7 +353,7 @@ namespace LookGenerator.Persistence.Data.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
-                    b.Property<int>("Colour")
+                    b.Property<int>("ColourId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -326,11 +373,54 @@ namespace LookGenerator.Persistence.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ColourId");
+
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductItems");
+                });
+
+            modelBuilder.Entity("LookGenerator.Domain.Entities.ProductLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_generate_v4()");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductItemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("RegionName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("ProductItemId");
+
+                    b.HasIndex("Url", "RegionName");
+
+                    b.ToTable("ProductLinks");
                 });
 
             modelBuilder.Entity("LookGenerator.Domain.Entities.ProductVariation", b =>
@@ -349,9 +439,8 @@ namespace LookGenerator.Persistence.Data.Migrations
                     b.Property<bool>("IsInStock")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("MasterSizeId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("MasterSizeIdentifierId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -369,11 +458,15 @@ namespace LookGenerator.Persistence.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("SizeType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("MasterSizeId");
+                    b.HasIndex("MasterSizeIdentifierId");
 
                     b.HasIndex("ProductItemId");
 
@@ -442,10 +535,6 @@ namespace LookGenerator.Persistence.Data.Migrations
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<Guid>("SizeCategoryId")
                         .HasColumnType("uuid");
 
@@ -456,6 +545,24 @@ namespace LookGenerator.Persistence.Data.Migrations
                     b.HasIndex("SizeCategoryId");
 
                     b.ToTable("SizeOptions");
+                });
+
+            modelBuilder.Entity("LookGenerator.Domain.Entities.SizeOptionMasterIdentifier", b =>
+                {
+                    b.Property<Guid>("SizeOptionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("MasterIdentifierId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("SizeOptionId", "MasterIdentifierId");
+
+                    b.HasIndex("MasterIdentifierId");
+
+                    b.ToTable("SizeOptionMasterIdentifiers");
                 });
 
             modelBuilder.Entity("LookGenerator.Domain.Entities.User", b =>
@@ -502,7 +609,7 @@ namespace LookGenerator.Persistence.Data.Migrations
                         new
                         {
                             Id = new Guid("226b1dad-0065-44c6-acef-93186e7cd0f2"),
-                            CreatedAt = new DateTime(2025, 1, 20, 13, 7, 52, 114, DateTimeKind.Utc).AddTicks(1397),
+                            CreatedAt = new DateTime(2025, 4, 24, 22, 5, 19, 966, DateTimeKind.Utc).AddTicks(8720),
                             Email = "mrsplash2356@gmail.com",
                             EmailConfirmed = true,
                             Role = "Admin",
@@ -575,13 +682,11 @@ namespace LookGenerator.Persistence.Data.Migrations
 
             modelBuilder.Entity("LookGenerator.Domain.Entities.MasterSizeIdentifier", b =>
                 {
-                    b.HasOne("LookGenerator.Domain.Entities.SizeOption", "SizeOption")
-                        .WithMany("MasterSizeIds")
-                        .HasForeignKey("SizeOptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("LookGenerator.Domain.Entities.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId");
 
-                    b.Navigation("SizeOption");
+                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("LookGenerator.Domain.Entities.Product", b =>
@@ -664,6 +769,12 @@ namespace LookGenerator.Persistence.Data.Migrations
 
             modelBuilder.Entity("LookGenerator.Domain.Entities.ProductItem", b =>
                 {
+                    b.HasOne("LookGenerator.Domain.Entities.Colour", "Colour")
+                        .WithMany("ProductItems")
+                        .HasForeignKey("ColourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("LookGenerator.Domain.Entities.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatedBy")
@@ -675,9 +786,29 @@ namespace LookGenerator.Persistence.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Colour");
+
                     b.Navigation("Creator");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("LookGenerator.Domain.Entities.ProductLink", b =>
+                {
+                    b.HasOne("LookGenerator.Domain.Entities.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("LookGenerator.Domain.Entities.ProductItem", "ProductItem")
+                        .WithMany("Links")
+                        .HasForeignKey("ProductItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Creator");
+
+                    b.Navigation("ProductItem");
                 });
 
             modelBuilder.Entity("LookGenerator.Domain.Entities.ProductVariation", b =>
@@ -689,7 +820,7 @@ namespace LookGenerator.Persistence.Data.Migrations
 
                     b.HasOne("LookGenerator.Domain.Entities.MasterSizeIdentifier", "MasterSizeIdentifier")
                         .WithMany("ProductVariations")
-                        .HasForeignKey("MasterSizeId")
+                        .HasForeignKey("MasterSizeIdentifierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -741,6 +872,25 @@ namespace LookGenerator.Persistence.Data.Migrations
                     b.Navigation("SizeCategory");
                 });
 
+            modelBuilder.Entity("LookGenerator.Domain.Entities.SizeOptionMasterIdentifier", b =>
+                {
+                    b.HasOne("LookGenerator.Domain.Entities.MasterSizeIdentifier", "MasterSizeIdentifier")
+                        .WithMany("SizeOptions")
+                        .HasForeignKey("MasterIdentifierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LookGenerator.Domain.Entities.SizeOption", "SizeOption")
+                        .WithMany("MasterSizeIdentifiers")
+                        .HasForeignKey("SizeOptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MasterSizeIdentifier");
+
+                    b.Navigation("SizeOption");
+                });
+
             modelBuilder.Entity("LookGenerator.Domain.Entities.User", b =>
                 {
                     b.HasOne("LookGenerator.Domain.Entities.User", "Creator")
@@ -761,6 +911,11 @@ namespace LookGenerator.Persistence.Data.Migrations
                     b.Navigation("AttributeOptions");
                 });
 
+            modelBuilder.Entity("LookGenerator.Domain.Entities.Colour", b =>
+                {
+                    b.Navigation("ProductItems");
+                });
+
             modelBuilder.Entity("LookGenerator.Domain.Entities.Look", b =>
                 {
                     b.Navigation("LookProductVariations");
@@ -769,6 +924,8 @@ namespace LookGenerator.Persistence.Data.Migrations
             modelBuilder.Entity("LookGenerator.Domain.Entities.MasterSizeIdentifier", b =>
                 {
                     b.Navigation("ProductVariations");
+
+                    b.Navigation("SizeOptions");
                 });
 
             modelBuilder.Entity("LookGenerator.Domain.Entities.Product", b =>
@@ -789,6 +946,8 @@ namespace LookGenerator.Persistence.Data.Migrations
                 {
                     b.Navigation("Images");
 
+                    b.Navigation("Links");
+
                     b.Navigation("Variations");
                 });
 
@@ -806,7 +965,7 @@ namespace LookGenerator.Persistence.Data.Migrations
 
             modelBuilder.Entity("LookGenerator.Domain.Entities.SizeOption", b =>
                 {
-                    b.Navigation("MasterSizeIds");
+                    b.Navigation("MasterSizeIdentifiers");
                 });
 
             modelBuilder.Entity("LookGenerator.Domain.Entities.User", b =>

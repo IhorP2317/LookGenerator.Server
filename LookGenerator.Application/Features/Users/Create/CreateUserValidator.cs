@@ -15,7 +15,7 @@ namespace LookGenerator.Application.Features.Users.Create ;
                 .WithMessage("Invalid email format.")
                 .MustAsync(
                     async (email, _) =>
-                        await context.Users.AnyAsync(u => u.Email == email))
+                       !( await context.Users.AnyAsync(u => u.Email == email)))
                 .WithMessage("The email has already been used for another account.");
 
             RuleFor(rc => rc.UserName)

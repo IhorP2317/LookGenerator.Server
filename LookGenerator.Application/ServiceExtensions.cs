@@ -1,7 +1,9 @@
 ﻿using System.Net.Http.Headers;
 using System.Reflection;
 using FluentValidation;
+using LookGenerator.Application.Abstractions;
 using LookGenerator.Application.Common.Behaviors;
+using LookGenerator.Application.Common.Services;
 using LookGenerator.Application.Settings;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +23,8 @@ namespace LookGenerator.Application ;
             });
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddScoped<ISizeGuideService, SizeGuideService>();
+            services.AddScoped<ILookGenerationService, LookGenerationService>();
 
             var identityHttpClientSettings = configuration
                 .GetSection("IdentityHttpClient")

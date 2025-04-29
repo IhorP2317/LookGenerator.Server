@@ -11,4 +11,11 @@
       <ProjectReference Include="..\LookGenerator.Domain\LookGenerator.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="OpenAI" Version="2.1.0" />
+      <PackageReference Include="Quartz" Version="3.14.0" />
+      <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.14.0" />
+      <PackageReference Include="Quartz.Extensions.Hosting" Version="3.14.0" />
+    </ItemGroup>
+
 </Project>

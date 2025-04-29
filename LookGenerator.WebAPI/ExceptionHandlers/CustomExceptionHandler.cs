@@ -58,6 +58,12 @@ namespace LookGenerator.WebAPI.ExceptionHandlers ;
                             exception.GetType().Name,
                             httpContext.Response.StatusCode = StatusCodes.Status403Forbidden
                         ),
+                ThirdPartyResponseException =>
+                    (
+                        exception.Message,
+                            exception.GetType().Name,
+                            httpContext.Response.StatusCode = StatusCodes.Status502BadGateway
+                        ),
                 _ =>
                     (
                         // Fallback for unhandled exceptions

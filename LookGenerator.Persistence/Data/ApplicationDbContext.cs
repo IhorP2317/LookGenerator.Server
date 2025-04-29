@@ -1,10 +1,8 @@
 ﻿using LookGenerator.Application.Abstractions;
 using LookGenerator.Domain.Entities;
 using LookGenerator.Persistence.Data.Configurations;
-using LookGenerator.Persistence.Data.Interceptors;
 using LookGenerator.Persistence.Settings;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace LookGenerator.Persistence.Data ;
@@ -14,6 +12,7 @@ namespace LookGenerator.Persistence.Data ;
     {
         public DbSet<AttributeOption> AttributeOptions { get; set; }
         public DbSet<AttributeType> AttributeTypes { get; set; }
+        public DbSet<Colour> Colours { get; set; }
         public DbSet<Look> Looks { get; set; }
         public DbSet<LookProductVariation> LookProductVariations { get; set; }
         public DbSet<MasterSizeIdentifier> MasterSizeIdentifiers { get; set; }
@@ -22,9 +21,11 @@ namespace LookGenerator.Persistence.Data ;
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<ProductItem> ProductItems { get; set; }
+        public DbSet<ProductLink> ProductLinks { get; set; }
         public DbSet<ProductVariation> ProductVariations { get; set; }
         public DbSet<SizeCategory> SizeCategories { get; set; }
         public DbSet<SizeOption> SizeOptions { get; set; }
+        public DbSet<SizeOptionMasterIdentifier> SizeOptionMasterIdentifiers { get; set; }
         public DbSet<User> Users { get; set; }
 
 
@@ -33,6 +34,7 @@ namespace LookGenerator.Persistence.Data ;
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new AttributeOptionConfiguration());
             modelBuilder.ApplyConfiguration(new AttributeTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ColourConfiguration());
             modelBuilder.ApplyConfiguration(new LookConfiguration());
             modelBuilder.ApplyConfiguration(new LookProductVariationConfiguration());
             modelBuilder.ApplyConfiguration(new MasterSizeIdentifierConfiguration());
@@ -41,9 +43,11 @@ namespace LookGenerator.Persistence.Data ;
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
             modelBuilder.ApplyConfiguration(new ProductItemConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductLinkConfiguration());
             modelBuilder.ApplyConfiguration(new ProductVariationConfiguration());
             modelBuilder.ApplyConfiguration(new SizeCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new SIzeOptionConfiguration());
+            modelBuilder.ApplyConfiguration(new SizeOptionMasterIdentifierConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration(adminSettings.Value));
         }
     }

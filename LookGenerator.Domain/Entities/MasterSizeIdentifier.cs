@@ -2,10 +2,9 @@
 
 namespace LookGenerator.Domain.Entities ;
 
-    public class MasterSizeIdentifier
+    public class MasterSizeIdentifier:BaseEntity
     {
         public string Identifier { get; set; } = default!;
-        public Guid SizeOptionId { get; set; } 
-        public SizeOption SizeOption { get; set; } = default!;
+        public ICollection<SizeOptionMasterIdentifier> SizeOptions { get; set; } = new List<SizeOptionMasterIdentifier>();
         public ICollection<ProductVariation> ProductVariations { get; set; } = new List<ProductVariation>();
     }

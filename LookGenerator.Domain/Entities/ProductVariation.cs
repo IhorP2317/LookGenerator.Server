@@ -8,8 +8,9 @@ namespace LookGenerator.Domain.Entities ;
         public ProductItem ProductItem { get; set; } = default!;
         public decimal Price { get; set; }
         public string Size { get; set; } = default!;
+        public string SizeType { get; set; } = string.Empty;
         public bool IsInStock { get; set; }
-        public string MasterSizeId { get; set; } = default!;
+        public Guid MasterSizeIdentifierId { get; set; }
         public MasterSizeIdentifier MasterSizeIdentifier { get; set; } = default!;
         public ICollection<LookProductVariation> LookProductVariations { get; set; } = new List<LookProductVariation>();
     }

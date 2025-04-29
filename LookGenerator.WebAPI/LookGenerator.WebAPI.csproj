@@ -17,7 +17,9 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Scalar.AspNetCore" Version="1.2.70" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.11.0" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>
@@ -28,6 +30,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\LookGenerator.Application\LookGenerator.Application.csproj" />
+      <ProjectReference Include="..\LookGenerator.Infrastructure\LookGenerator.Infrastructure.csproj" />
       <ProjectReference Include="..\LookGenerator.Persistence\LookGenerator.Persistence.csproj" />
     </ItemGroup>
 

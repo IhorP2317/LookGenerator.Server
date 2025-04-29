@@ -20,14 +20,14 @@ namespace LookGenerator.WebAPI.Services ;
         }
 
         public string? UserId =>
-            httpContextAccessor.HttpContext?.User.FindFirstValue("nameid");
+            httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         public string? Username =>
-            httpContextAccessor.HttpContext?.User.FindFirstValue("unique_name");
+            httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Name);
 
         public string? Email =>
-            httpContextAccessor.HttpContext?.User.FindFirstValue("email");
+            httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
 
         public string? UserRole =>
-            httpContextAccessor.HttpContext?.User.FindFirstValue("role");
+            httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Role);
     }
