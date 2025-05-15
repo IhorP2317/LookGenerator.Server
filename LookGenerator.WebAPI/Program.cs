@@ -10,7 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
-    builder.Services.AddOpenApi();
     builder.Configuration.AddUserSecrets<Program>(optional:true, reloadOnChange:true)
         .AddEnvironmentVariables();
     builder.Services.ConfigureWebApi(builder.Configuration);
@@ -28,10 +27,9 @@ var builder = WebApplication.CreateBuilder(args);
         await app.ApplyMigrationsAsync();
     }
 
-
+    app.UseCors("AllowAny");
     app.UseExceptionHandler()
         .UseHttpsRedirection()
-        .UseCors("AllowAny")
         .UseAuthentication()
         .UseAuthorization();
     app.MapCarter();

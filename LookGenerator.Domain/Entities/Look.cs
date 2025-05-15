@@ -8,6 +8,7 @@ namespace LookGenerator.Domain.Entities ;
         public string? Description { get; set; }
         public string ColorPalette { get; set; } = string.Empty;
         public ICollection<LookProductVariation> LookProductVariations { get; set; } = new List<LookProductVariation>();
-        public User User { get; set; } = default!;
+        public ICollection<Reaction> Reactions { get; set; } = new List<Reaction>();
+
         public LookStatus LookStatus { get; set; }
     }

@@ -1,10 +1,10 @@
 ﻿using Carter;
 using LookGenerator.Application.Abstractions;
+using LookGenerator.Application.Common.DTOs.User;
 using LookGenerator.Application.Features.Users.ConfirmEmail;
 using LookGenerator.Application.Features.Users.Create;
 using LookGenerator.Application.Features.Users.Delete;
 using LookGenerator.Application.Features.Users.GetCurrentUser;
-using LookGenerator.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,7 +29,7 @@ public class UserEndpoints: CarterModule
             .Produces(StatusCodes.Status204NoContent);
         group.MapGet("current-user", GetCurrentUser)
             .WithName(nameof(GetCurrentUser))
-            .Produces<User>()
+            .Produces<UserResponse>()
             .RequireAuthorization();
     }
 

@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿
 using Carter;
 using LookGenerator.Application.Abstractions;
 using LookGenerator.WebAPI.ExceptionHandlers;

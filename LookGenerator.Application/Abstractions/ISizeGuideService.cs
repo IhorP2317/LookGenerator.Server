@@ -4,6 +4,9 @@ namespace LookGenerator.Application.Abstractions;
 
 public interface ISizeGuideService
 {
+    Task<Dictionary<string, SizeOption>> GetDimensionsAsync(ProductVariation productVariation,
+        CancellationToken cancellationToken);
+    
     Task<(Dictionary<Guid, Dictionary<string, SizeOption>> topSizeMap,
             Dictionary<Guid, Dictionary<string, SizeOption>> bottomSizeMap,
             Dictionary<Guid, Dictionary<string, SizeOption>> footwearSizeMap)>

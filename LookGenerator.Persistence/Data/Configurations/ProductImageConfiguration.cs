@@ -14,5 +14,10 @@ namespace LookGenerator.Persistence.Data.Configurations ;
                 .WithMany(pi => pi.Images)
                 .HasForeignKey(pi => pi.ProductItemId)
                 .OnDelete(DeleteBehavior.Cascade);
+            
+            builder.HasOne(b => b.Creator)
+                .WithMany(u => u.ProductImages) // Proper back navigation
+                .HasForeignKey(b => b.CreatedBy)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }

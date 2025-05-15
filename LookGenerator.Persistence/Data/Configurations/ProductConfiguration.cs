@@ -10,6 +10,7 @@ namespace LookGenerator.Persistence.Data.Configurations ;
         {
             base.Configure(builder);
             builder.HasIndex(p => p.Name);
+            builder.HasIndex(p => p.Description);
             builder.HasOne(p => p.ProductCategory)
                 .WithMany(pc => pc.Products)
                 .HasForeignKey(p => p.CategoryId)
@@ -18,5 +19,10 @@ namespace LookGenerator.Persistence.Data.Configurations ;
                 .WithOne(i => i.Product)
                 .HasForeignKey(i => i.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
+            
+            builder.HasOne(b => b.Creator)
+                .WithMany(u => u.Products) // Proper back navigation
+                .HasForeignKey(b => b.CreatedBy)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }

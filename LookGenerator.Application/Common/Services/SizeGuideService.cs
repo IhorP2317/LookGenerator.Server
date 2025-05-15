@@ -7,6 +7,53 @@ namespace LookGenerator.Application.Common.Services;
 
 public class SizeGuideService(IApplicationDbContext applicationDbContext) : ISizeGuideService
 {
+    public async Task<Dictionary<string, SizeOption>> GetDimensionsAsync(ProductVariation productVariation,
+        CancellationToken cancellationToken)
+    {
+        if (productVariation.ProductItem.Product.BodyZone == ProductBodyZone.HeadOrExtras)
+        {
+            return [];
+        }
+
+        var genderCategoryId = await applicationDbContext.SizeCategories
+            .AsNoTracking()
+            .Where(sc =>
+                sc.Name.ToLower() == productVariation.ProductItem.Product.Gender.ToLower() && sc.ParentCategoryId == null)
+            .Select(sc => sc.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+        if (genderCategoryId == Guid.Empty)
+            return [];
+        var parentCategoryLower = productVariation.ProductItem.Product.BodyZone switch
+        {
+            ProductBodyZone.UpperBody => "top",
+            ProductBodyZone.LowerBody => "bottom",
+            ProductBodyZone.Feet => "shoes"
+        };
+
+
+        var parentCategoryId = await applicationDbContext.SizeCategories
+            .AsNoTracking()
+            .Where(sc => sc.Name.ToLower() == parentCategoryLower && sc.ParentCategoryId == genderCategoryId)
+            .Select(sc => sc.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        var relevantCategoryIds = await GetDescendantCategoryIdsAsync(parentCategoryId, cancellationToken);
+        var sizeOptionsList = await applicationDbContext.SizeOptions
+            .AsNoTracking()
+            .Include(so => so.SizeCategory)
+            .Include(so => so.MasterSizeIdentifiers)
+            .Where(so => relevantCategoryIds.Contains(so.SizeCategoryId) &&
+                         so.MasterSizeIdentifiers.Any(msi =>
+                             msi.MasterIdentifierId == productVariation.MasterSizeIdentifierId))
+            .ToListAsync(cancellationToken);
+
+        var sizeOptions = sizeOptionsList
+            .GroupBy(so => so.SizeCategory.Name)
+            .ToDictionary(g => g.Key, g => g.First());
+
+        return sizeOptions;
+    }
+
     public async Task<(Dictionary<Guid, Dictionary<string, SizeOption>> topSizeMap,
             Dictionary<Guid, Dictionary<string, SizeOption>> bottomSizeMap,
             Dictionary<Guid, Dictionary<string, SizeOption>> footwearSizeMap)>
@@ -166,7 +213,8 @@ public class SizeGuideService(IApplicationDbContext applicationDbContext) : ISiz
         return result;
     }
 
-    private async Task<HashSet<Guid>> FindAllBeltCategoryIdsAsync(Guid genderCategoryId, CancellationToken cancellationToken)
+    private async Task<HashSet<Guid>> FindAllBeltCategoryIdsAsync(Guid genderCategoryId,
+        CancellationToken cancellationToken)
     {
         var allCategories = await applicationDbContext.ProductCategories
             .AsNoTracking()
@@ -204,6 +252,4 @@ public class SizeGuideService(IApplicationDbContext applicationDbContext) : ISiz
 
         return beltCategoryIds;
     }
-
-
 }

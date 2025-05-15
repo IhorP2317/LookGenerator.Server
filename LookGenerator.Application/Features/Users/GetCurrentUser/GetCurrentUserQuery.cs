@@ -1,6 +1,6 @@
 using LookGenerator.Application.Abstractions;
-using LookGenerator.Domain.Entities;
+using LookGenerator.Application.Common.DTOs.User;
 
 namespace LookGenerator.Application.Features.Users.GetCurrentUser;
 
-public record GetCurrentUserQuery(string Email):IQuery<User>;
+public record GetCurrentUserQuery(string Email):IQuery<UserResponse>;

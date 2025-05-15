@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using LookGenerator.Application.Abstractions;
 using LookGenerator.Application.Common.DTOs;
+using LookGenerator.Application.Common.DTOs.Look;
 using LookGenerator.Application.Common.Exceptions;
 using LookGenerator.Domain.Entities;
 using Microsoft.EntityFrameworkCore;

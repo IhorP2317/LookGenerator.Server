@@ -226,6 +226,7 @@ public class BershkaLookParsingJob(IHttpClientFactory httpClientFactory, IApplic
                 ExternalId = productElement.Id,
                 Name = productElement.NameEn,
                 Description = productElement.Detail?.Description,
+                Gender = productElement.SectionNameEn,
                 CategoryId = finalCategory.Id,
                 BodyZone = (ProductBodyZone)correctedIsTop
             };
@@ -237,7 +238,7 @@ public class BershkaLookParsingJob(IHttpClientFactory httpClientFactory, IApplic
                 AttributeOptionId = attrId
             }));
         }
-
+        
         var colors = productElement.Detail?.Colors ??
                      productElement.BundleProductSummaries?.FirstOrDefault()?.Detail?.Colors ?? [];
         var mediaGroup = productElement.Detail?.Xmedia ??

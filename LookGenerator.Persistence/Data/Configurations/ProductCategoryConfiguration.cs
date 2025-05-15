@@ -14,5 +14,10 @@ namespace LookGenerator.Persistence.Data.Configurations ;
                 .WithMany(pc => pc.SubCategories)
                 .HasForeignKey(pc => pc.ParentCategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
+            
+            builder.HasOne(b => b.Creator)
+                .WithMany(u => u.ProductCategories) // Proper back navigation
+                .HasForeignKey(b => b.CreatedBy)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }

@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using LookGenerator.Application.Abstractions;
+using LookGenerator.Infrastructure.Jobs.Definitions;
 using LookGenerator.Infrastructure.Jobs.Setups;
 using LookGenerator.Infrastructure.Services;
 using LookGenerator.Infrastructure.Settings;

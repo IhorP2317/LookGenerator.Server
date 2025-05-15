@@ -9,8 +9,14 @@ namespace LookGenerator.Persistence.Data.Configurations ;
         public override void Configure(EntityTypeBuilder<ProductVariation> builder)
         {
             base.Configure(builder);
+            builder.HasIndex(p => p.Size);
             builder.Property(p => p.Price)
                 .HasColumnType("numeric(18,2)"); 
+            
+            builder.HasOne(b => b.Creator)
+                .WithMany(u => u.ProductVariations) // Proper back navigation
+                .HasForeignKey(b => b.CreatedBy)
+                .OnDelete(DeleteBehavior.SetNull);
 
         }
     }

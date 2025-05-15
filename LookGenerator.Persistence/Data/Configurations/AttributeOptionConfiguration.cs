@@ -14,5 +14,9 @@ namespace LookGenerator.Persistence.Data.Configurations ;
                 .WithMany(a => a.AttributeOptions)
                 .HasForeignKey(a => a.AttributeTypeId)
                 .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(b => b.Creator)
+                .WithMany(u => u.AttributeOptions) 
+                .HasForeignKey(b => b.CreatedBy)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }

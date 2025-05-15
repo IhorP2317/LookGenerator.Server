@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using LookGenerator.Application.Abstractions;
 using LookGenerator.Application.Common.Constants;
 using LookGenerator.Application.Common.DTOs;
+using LookGenerator.Application.Common.DTOs.Look;
 using LookGenerator.Application.Common.Helpers;
 using LookGenerator.Application.Common.Mappers;
 using LookGenerator.Domain.Entities;

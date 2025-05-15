@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace LookGenerator.Application.Common.DTOs
+namespace LookGenerator.Application.Common.DTOs.Look
 {
     public record LookGenerationRequest(
         [property: JsonPropertyName("products")]

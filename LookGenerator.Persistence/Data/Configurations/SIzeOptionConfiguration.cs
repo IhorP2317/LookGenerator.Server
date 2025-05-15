@@ -11,5 +11,10 @@ namespace LookGenerator.Persistence.Data.Configurations ;
             base.Configure(builder);
             builder.Property(s => s.Cm).HasColumnType("numeric(5,2)"); 
             builder.Property(s => s.Inch).HasColumnType("numeric(5,2)"); 
+            
+            builder.HasOne(b => b.Creator)
+                .WithMany(u => u.SizeOptions) // Proper back navigation
+                .HasForeignKey(b => b.CreatedBy)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }

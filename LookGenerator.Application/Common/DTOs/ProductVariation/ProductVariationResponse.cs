@@ -1,4 +1,4 @@
-namespace LookGenerator.Application.Common.DTOs;
+namespace LookGenerator.Application.Common.DTOs.ProductVariation;
 
 public record ProductVariationResponse(
     Guid Id,

@@ -1,4 +1,7 @@
-using LookGenerator.Application.Common.DTOs;
+using LookGenerator.Application.Common.DTOs.Look;
+using LookGenerator.Application.Common.DTOs.Product;
+using LookGenerator.Application.Common.DTOs.ProductVariation;
+using LookGenerator.Application.Common.Helpers;
 using LookGenerator.Domain.Entities;
 
 namespace LookGenerator.Application.Common.Mappers;
@@ -17,9 +20,11 @@ public static class ProductMapper
             pv.ToProductVariationResponse(sizeMap?.GetValueOrDefault(pv.MasterSizeIdentifierId))
         ).ToList();
 
+
         return new LookProductResponse(
             Id: productItem.Product.Id,
             Name: productItem.Product.Name,
+            Gender: productItem.Product.Gender,
             BodyZone: productItem.Product.BodyZone,
             Categories: categories ?? [],
             Attributes: attributes ?? new Dictionary<string, List<string>>(),
@@ -28,32 +33,21 @@ public static class ProductMapper
             ProductImage: productItem.Images.FirstOrDefault()?.ImageUrl,
             ProductLink: productItem.Links.FirstOrDefault()?.Url,
             Description: productItem.Product.Description,
-            ProductVariations: variations
+            ProductVariations: variations,
+            Price: variations.Count != 0
+                ? variations.Average(v => v.Price)
+                : 0,
+            Sizes: variations.Count != 0 && productItem.Product.BodyZone != ProductBodyZone.HeadOrExtras
+                ? string.Join(" /", variations.Select(v => v.Size))
+                : null
         );
     }
 
 
-    public static ProductVariationResponse ToProductVariationResponse(this ProductVariation productVariation,
-        Dictionary<string, SizeOption>? dimensions = null)
-    {
-        return new ProductVariationResponse(
-            Id: productVariation.Id,
-            Size: productVariation.Size,
-            Price: productVariation.Price,
-            MasterSizeIdentifierId: productVariation.MasterSizeIdentifierId,
-            ProductItemId: productVariation.ProductItemId
-        )
-        {
-            ProductDimensions = dimensions?.ToDictionary(
-                entry => entry.Key,
-                entry => $"{Math.Round(entry.Value.Cm, 1)} cm"
-            )
-        };
-    }
-    /// <summary>
-    /// Maps a Product entity to a ProductRequest with only the required data
-    /// </summary>
-    public static ProductRequest ToRequest(this Product product, ICollection<string>categories, ICollection<ProductItemRequest>? productItems = null)
+  
+
+    public static ProductRequest ToRequest(this Product product, ICollection<string> categories,
+        ICollection<ProductItemRequest>? productItems = null)
     {
         return new ProductRequest(
             Id: product.Id,
@@ -65,4 +59,26 @@ public static class ProductMapper
         );
     }
 
+    public static PagedList<ProductToSelectResponse> ToPagedSelectResponse(this PagedList<ProductItem> products)
+    {
+        return new PagedList<ProductToSelectResponse>(
+            items: products.Items.Select(p => p.ToSelectResponse()).ToList(),
+            page: products.Page,
+            pageSize: products.PageSize,
+            totalCount: products.TotalCount
+        );
+    }
+
+
+    public static ProductToSelectResponse ToSelectResponse(this ProductItem productItem)
+    {
+        return new ProductToSelectResponse(
+            Id: productItem.Product.Id,
+            Name: productItem.Product.Name,
+            Description: productItem.Product.Description,
+            ProductItemId: productItem.Id,
+            Color: productItem.Colour.Name,
+            ProductImage: productItem.Images.FirstOrDefault()?.ImageUrl
+        );
+    }
 }

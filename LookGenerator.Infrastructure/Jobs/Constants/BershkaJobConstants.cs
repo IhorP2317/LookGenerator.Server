@@ -44,6 +44,7 @@ public static class BershkaJobConstants
             ["Gold"] = "Yellow",
             ["Mustard"] = "Yellow",
             ["Orange"] = "Orange",
+            ["Dark orange"] = "Orange",
             ["Green"] = "Green",
             ["Khaki"] = "Green",
             ["Lime"] = "Green",

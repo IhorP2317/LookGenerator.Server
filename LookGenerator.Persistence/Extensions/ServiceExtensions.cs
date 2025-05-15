@@ -17,6 +17,7 @@ public static class ServiceExtensions
         services
             .Configure<AdminSettings>(configuration.GetSection("AdminSettings"))
             .AddScoped<AuditingSaveChangesInterceptor>()
+            .AddScoped<IDataSeeder,AdminDataSeeder>()
             .AddScoped<IDataSeeder,AttributeDataSeeder>();
         services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
         {

@@ -13,9 +13,5 @@ namespace LookGenerator.Persistence.Data.Configurations ;
             builder.Property(b => b.Id)
                 .HasDefaultValueSql("uuid_generate_v4()");
             
-            builder.HasOne(b => b.Creator)
-                .WithMany()
-                .HasForeignKey(b => b.CreatedBy)
-                .OnDelete(DeleteBehavior.SetNull);
         }
     }

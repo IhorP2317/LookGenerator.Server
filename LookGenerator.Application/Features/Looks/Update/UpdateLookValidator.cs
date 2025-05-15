@@ -1,5 +1,6 @@
 using FluentValidation;
 using LookGenerator.Application.Abstractions;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace LookGenerator.Application.Features.Looks.Update;
@@ -25,5 +26,9 @@ public class UpdateLookValidator : AbstractValidator<UpdateLookCommand>
         RuleFor(ul => ul.Status)
             .Must(Enum.IsDefined)
             .WithMessage("Invalid look status.");
+        RuleFor(ul => ul.ProductVariationIds)
+            .MustAsync(async (ids, _) =>
+                await applicationDbContext.ProductVariations.CountAsync(pv => ids.Contains(pv.Id)) == ids.Count)
+            .WithMessage("Some product variations not found.");
     }
 }

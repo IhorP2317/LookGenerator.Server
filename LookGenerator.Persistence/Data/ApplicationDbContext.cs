@@ -7,9 +7,10 @@ using Microsoft.Extensions.Options;
 
 namespace LookGenerator.Persistence.Data ;
 
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IOptions<AdminSettings> adminSettings) : DbContext(options),
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options),
         IApplicationDbContext
     {
+       
         public DbSet<AttributeOption> AttributeOptions { get; set; }
         public DbSet<AttributeType> AttributeTypes { get; set; }
         public DbSet<Colour> Colours { get; set; }
@@ -27,6 +28,8 @@ namespace LookGenerator.Persistence.Data ;
         public DbSet<SizeOption> SizeOptions { get; set; }
         public DbSet<SizeOptionMasterIdentifier> SizeOptionMasterIdentifiers { get; set; }
         public DbSet<User> Users { get; set; }
+        
+        public DbSet<Reaction> Reactions { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,6 +51,7 @@ namespace LookGenerator.Persistence.Data ;
             modelBuilder.ApplyConfiguration(new SizeCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new SIzeOptionConfiguration());
             modelBuilder.ApplyConfiguration(new SizeOptionMasterIdentifierConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration(adminSettings.Value));
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new ReactionConfiguration());
         }
     }

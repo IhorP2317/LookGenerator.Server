@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 namespace LookGenerator.Application.Abstractions ;
 
     public interface IApplicationDbContext
-    {
+    { 
+        DbSet<TEntity> Set<TEntity>() where TEntity : class;
        DbSet<AttributeOption> AttributeOptions { get; set; }
         DbSet<AttributeType> AttributeTypes { get; set; }
         DbSet<Colour> Colours { get; set; }
@@ -22,6 +23,8 @@ namespace LookGenerator.Application.Abstractions ;
         DbSet<SizeOption> SizeOptions { get; set; }
         DbSet<SizeOptionMasterIdentifier> SizeOptionMasterIdentifiers { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Reaction> Reactions { get; set; }
+
         EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
         EntityEntry Entry(object entity);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

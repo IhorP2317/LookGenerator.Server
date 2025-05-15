@@ -1,4 +1,5 @@
 using LookGenerator.Application.Common.DTOs;
+using LookGenerator.Application.Common.DTOs.Look;
 using LookGenerator.Application.Features.Looks.Generate;
 using LookGenerator.Domain.Entities;
 

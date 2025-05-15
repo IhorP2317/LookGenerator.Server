@@ -1,13 +1,14 @@
 using LookGenerator.Application.Abstractions;
-using LookGenerator.Domain.Entities;
+using LookGenerator.Application.Common.DTOs.User;
+using LookGenerator.Application.Common.Mappers;
 using Microsoft.EntityFrameworkCore;
 
 namespace LookGenerator.Application.Features.Users.GetCurrentUser;
 
-public class GetCurrentUserHandler(IApplicationDbContext dbContext):IQueryHandler<GetCurrentUserQuery,User>
+public class GetCurrentUserHandler(IApplicationDbContext dbContext):IQueryHandler<GetCurrentUserQuery,UserResponse>
 {
-    public async Task<User> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
+    public async Task<UserResponse> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
     {
-        return  await dbContext.Users.FirstAsync(u => u.Email == request.Email, cancellationToken);
+        return  (await dbContext.Users.FirstAsync(u => u.Email == request.Email, cancellationToken)).ToResponse();
     }
 }
