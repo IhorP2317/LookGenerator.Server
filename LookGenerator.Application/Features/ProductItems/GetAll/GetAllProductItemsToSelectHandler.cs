@@ -19,7 +19,9 @@ public class GetAllProductItemsToSelectHandler(IApplicationDbContext application
                 .ThenInclude(p => p.ProductAttributeOptions)
                 .Include(p => p.Colour)
                 .Include(p => p.Images)
-                .AsQueryable();;
+                .Include(productItem => productItem.Product)
+                .ThenInclude(product => product.ProductCategory)
+                .AsQueryable();
         productItemsQuery = request.Filters.Aggregate(productItemsQuery,
             (current, filter) => ProductFiltersHelper.GetProductFilter(filter)(current));
         

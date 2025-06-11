@@ -14,7 +14,7 @@ public class CreateLookHandler(IApplicationDbContext applicationDbContext) : ICo
             Name = request.Name,
             Description = request.Description,
             ColorPalette = request.ColorPalette,
-            LookStatus = LookStatus.Draft,
+            LookStatus = LookStatus.Private,
             LookProductVariations = variationIds
                 .Select(pvId => new LookProductVariation
                 {

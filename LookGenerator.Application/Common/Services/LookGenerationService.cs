@@ -110,8 +110,10 @@ DO NOT make up any IDs. Use them exactly as given.";
                  {{LookGenerationConstants.OutputFormat}}
                  ## REQUIRED for every look:
                  1. Must contain at least one clothing item, and either:
+                    **
                     - A single full-body item (e.g. a dress or jumpsuit), OR
                     - A valid combination of one UpperBody and one LowerBody item.
+                    **
                  2. Must contain exactly one `Feet` item (Footwear is required).
                  3. Minimum of 3 items or more.
                  4. Only one item per bodyZone, except:

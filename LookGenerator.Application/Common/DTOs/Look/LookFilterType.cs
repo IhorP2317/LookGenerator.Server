@@ -11,5 +11,7 @@ public enum LookFilterType
     PageSize = 6,
     OrderByAscending = 7,
     OrderByDescending = 8,
-    CreatedByCurrentUser = 9
+    CreatedBy = 9,
+    LikedBy = 10,
+    PinnedBy = 11,
 }

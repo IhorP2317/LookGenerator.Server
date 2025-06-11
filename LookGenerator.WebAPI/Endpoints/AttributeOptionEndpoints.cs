@@ -1,6 +1,7 @@
 using Carter;
 using LookGenerator.Application.Common.DTOs.AttributeOption;
 using LookGenerator.Application.Features.AttributeOptions;
+using LookGenerator.Application.Features.AttributeOptions.GetAttributeOptions;
 using MediatR;
 
 namespace LookGenerator.WebAPI.Endpoints;

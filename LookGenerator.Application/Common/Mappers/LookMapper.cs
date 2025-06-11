@@ -102,6 +102,7 @@ public static class LookMapper
             PinCount: pinCount,
             IsLiked: isLiked,
             IsPinned: isPinned,
+            
             Creator: look.Creator.ToLookResponse()
         );
     }

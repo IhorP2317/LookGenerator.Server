@@ -78,7 +78,10 @@ public static class ProductMapper
             Description: productItem.Product.Description,
             ProductItemId: productItem.Id,
             Color: productItem.Colour.Name,
-            ProductImage: productItem.Images.FirstOrDefault()?.ImageUrl
+            ProductImage: productItem.Images.FirstOrDefault()?.ImageUrl,
+            BodyZone: productItem.Product.BodyZone,
+            ParentCategory: productItem.Product.ProductCategory.Name,
+            Gender:productItem.Product.Gender
         );
     }
 }

@@ -3,7 +3,7 @@ using LookGenerator.Application.Common.DTOs.AttributeOption;
 using LookGenerator.Application.Common.Mappers;
 using Microsoft.EntityFrameworkCore;
 
-namespace LookGenerator.Application.Features.AttributeOptions;
+namespace LookGenerator.Application.Features.AttributeOptions.GetAttributeOptions;
 
 public class GetAttributeOptionsHandler(IApplicationDbContext applicationDbContext)
     : IQueryHandler<GetAttributeOptionsQuery, ICollection<AttributeOptionResponse>>

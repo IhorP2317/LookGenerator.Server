@@ -97,18 +97,24 @@ public class GetLooksValidator : AbstractValidator<GetLooksQuery>
             RuleFor(x => x.Filters[LookFilterType.Status])
                 .Must(val =>
                 {
-                    if (val is JsonElement json)
-                    {
-                        if (json.ValueKind == JsonValueKind.Number && json.TryGetInt32(out var intVal))
-                            return Enum.IsDefined(typeof(LookStatus), intVal);
-                        if (json.ValueKind == JsonValueKind.String &&
-                            Enum.TryParse<LookStatus>(json.GetString(), true, out _))
-                            return true;
-                    }
+                    if (val is not JsonElement json)
+                        return false;
 
-                    return false;
+                    return json.ValueKind switch
+                    {
+                        JsonValueKind.Array  => json.EnumerateArray().All(IsValid), 
+                        _                    => IsValid(json)                       
+                    };
+
+                  
                 })
                 .WithMessage("Invalid LookStatus value.");
         });
+
     }
+    private bool    IsValid(JsonElement e) =>
+        (e.ValueKind == JsonValueKind.Number &&                 
+         Enum.IsDefined(typeof(LookStatus), e.GetInt32()))
+        || (e.ValueKind == JsonValueKind.String &&                  
+            Enum.TryParse<LookStatus>(e.GetString(), true, out _));
 }

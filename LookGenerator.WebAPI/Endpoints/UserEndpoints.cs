@@ -4,6 +4,7 @@ using LookGenerator.Application.Common.DTOs.User;
 using LookGenerator.Application.Features.Users.ConfirmEmail;
 using LookGenerator.Application.Features.Users.Create;
 using LookGenerator.Application.Features.Users.Delete;
+using LookGenerator.Application.Features.Users.Get;
 using LookGenerator.Application.Features.Users.GetCurrentUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,9 @@ public class UserEndpoints: CarterModule
             .WithName(nameof(RegisterUser))
             .Produces(StatusCodes.Status200OK)
             .AllowAnonymous();
+        group.MapGet("/{userId}", GetUser)
+            .WithName(nameof(GetUser))
+            .Produces<UserResponse>();
         group.MapDelete("/{userId}", DeleteUser)
             .WithName(nameof(DeleteUser))
             .Produces(StatusCodes.Status204NoContent)
@@ -37,6 +41,11 @@ public class UserEndpoints: CarterModule
         CancellationToken token = default)
     {
         return Results.Ok(await sender.Send(new GetCurrentUserQuery(currentUserService.Email ?? ""), token));
+    }
+    private async Task<IResult> GetUser([FromRoute] Guid userId, ISender sender,
+        CancellationToken cancellationToken = default)
+    {
+        return Results.Ok(await sender.Send(new GetUserQuery(userId), cancellationToken));
     }
 
     private async Task<IResult> RegisterUser([FromBody] CreateUserCommand createUserCommand, ISender sender,

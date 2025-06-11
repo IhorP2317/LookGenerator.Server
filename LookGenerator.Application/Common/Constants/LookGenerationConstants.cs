@@ -1,3 +1,5 @@
+using LookGenerator.Domain.Entities;
+
 namespace LookGenerator.Application.Common.Constants;
 
 public static class LookGenerationConstants
@@ -23,6 +25,12 @@ public static class LookGenerationConstants
           { "SHOES", ["footMeasure"] }
         }
       }
+    };
+    public static readonly Dictionary<string, ProductBodyZone> SizeZonesByCategory = new()
+    {
+      { "TOP", ProductBodyZone.UpperBody },
+      { "BOTTOM", ProductBodyZone.LowerBody },
+      { "SHOES", ProductBodyZone.Feet }
     };
 
 

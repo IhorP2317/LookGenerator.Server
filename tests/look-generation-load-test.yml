@@ -1,0 +1,41 @@
+config:
+  target: http://localhost:5211/api
+  phases:
+    - duration: 20
+      arrivalRate: 1
+      rampTo: 100
+      name: "Gentle Warm-Up"
+    - duration: 60
+      arrivalRate: 5
+      rampTo: 300
+      name: "Normal Load (Business Hours)"
+    - duration: 20
+      arrivalRate: 30
+      rampTo: 500
+      name: "Traffic Spike (Flash Sale)"
+  plugins:
+    ensure: {}
+    apdex: {}
+    metrics-by-endpoint: {}
+  apdex:
+    threshold: 300
+ensure:
+  thresholds:
+    - http.response_time.p95: 2000
+    - http.response_time.p99: 4000
+scenarios:
+  - name: "Look generation load test"
+    flow:
+      - loop:
+          - post:
+              url: '/looks'
+              json:
+                filters:
+                  "4": [0, 1, 2]
+                  "5": 1
+                  "6": 20
+                  "7": "name"
+                  "8": "name"
+                  "11": "226b1dad-0065-44c6-acef-93186e7cd0f2"
+          - think: 0.5
+        count: 10;

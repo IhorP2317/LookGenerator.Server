@@ -37,7 +37,7 @@ public class GetLooksHandler(IApplicationDbContext applicationDbContext, ICurren
 
 
         looksQuery = request.Filters.Aggregate(looksQuery,
-            (current, filter) => LookFiltersHelper.GetLookFilter(filter, currentUserService)(current));
+            (current, filter) => LookFiltersHelper.GetLookFilter(filter)(current));
 
         var pageNumber = request.Filters.TryGetValue(LookFilterType.PageNumber, out var pageNumberObj) &&
                          int.TryParse(pageNumberObj.ToString(), out var parsedPageNumber)

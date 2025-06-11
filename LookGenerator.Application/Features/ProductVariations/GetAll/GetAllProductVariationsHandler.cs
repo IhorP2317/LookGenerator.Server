@@ -36,7 +36,7 @@ public class GetAllProductVariationsHandler(
             dimensionMap[variation.Id] = dimensions;
         }
         productVariations = productVariations
-            .OrderBy(pv => pv.MasterSizeIdentifier.Identifier ?? pv.Size, new NaturalStringComparer())
+            .OrderBy(pv => pv.MasterSizeIdentifier.Identifier ?? pv.Size, new ClothingSizeComparer())
             .ToList();
 
         // 6. Convert to response models

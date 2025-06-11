@@ -1,5 +1,7 @@
 
 
+using LookGenerator.Domain.Entities;
+
 namespace LookGenerator.Application.Common.DTOs.Product;
 
 public record ProductToSelectResponse(
@@ -8,4 +10,7 @@ public record ProductToSelectResponse(
     string? Description,
     Guid ProductItemId,
     string Color,
-    string? ProductImage);
+    string? ProductImage,
+    ProductBodyZone BodyZone,
+    string ParentCategory,
+    string Gender);
