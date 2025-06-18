@@ -95,7 +95,10 @@ public static class LookMapper
             ColorPalette: look.ColorPalette,
             LookStatus: look.LookStatus,
             ProductImageUrls: look.LookProductVariations
-                .Select(lpv => lpv.ProductVariation.ProductItem.Images.Select(i => i.ImageUrl).FirstOrDefault())
+                .Select(lpv => lpv.ProductVariation.ProductItem)
+                .DistinctBy(pi => pi.Id)
+                .ToList()
+                .Select(pi =>pi.Images.Select(i => i.ImageUrl).FirstOrDefault())
                 .Distinct()
                 .ToList(),
             LikeCount: likeCount,

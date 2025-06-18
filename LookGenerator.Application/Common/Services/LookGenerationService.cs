@@ -100,7 +100,7 @@ DO NOT make up any IDs. Use them exactly as given.";
                    - Each product includes:
                      - id: Unique identifier for the product
                      - name: Product name
-                     - bodyZone: one of "UpperBody", "LowerBody", "Feet", or "HeadOrExtras"
+                     - **bodyZone: one of "UpperBody", "LowerBody", "Feet", and optionally "HeadOrExtras"**
                      - categories: List of category names this product belongs to (e.g., "Clothing", "Footwear", "Tops", "Dresses")
                      - productItems[]: Specific variations of the product, each with:
                        - id: Unique GUID identifier for this specific product item
@@ -110,11 +110,9 @@ DO NOT make up any IDs. Use them exactly as given.";
                  {{LookGenerationConstants.OutputFormat}}
                  ## REQUIRED for every look:
                  1. Must contain at least one clothing item, and either:
-                    **
-                    - A single full-body item (e.g. a dress or jumpsuit), OR
-                    - A valid combination of one UpperBody and one LowerBody item.
-                    **
-                 2. Must contain exactly one `Feet` item (Footwear is required).
+                    - **A single full-body item (e.g. a dress or jumpsuit)**, OR
+                    - **A valid combination of one UpperBody and one LowerBody item (e.g. a t-shirt and trousers).**
+                 2. Must contain **EXACTLY one `Feet` item (Footwear is required)**.
                  3. Minimum of 3 items or more.
                  4. Only one item per bodyZone, except:
                     - Up to 2 items from UpperBody if layered correctly.
